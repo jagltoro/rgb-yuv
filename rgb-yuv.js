@@ -1,8 +1,9 @@
-function rgbToYuv(array){
+function rgbToYuv(array, rowLength, subarrayRowLength){
   let red = []
   let row = []
   let gb = []
   const arrLength = array.length
+  const subArrayQuantity = rowLength / subarrayRowLength
 
   function isNewRow(length){
     return length % 2 === 0
@@ -10,10 +11,10 @@ function rgbToYuv(array){
 
   for(let i = 0; i < arrLength; i += 3){
     red.push(array[i]);
-    if(i % 12 === 0){ //Each row has 12 numbers
+    if(i % rowLength === 0){ //Each row has 12 numbers
       if(isNewRow(row.length + 1)){ //If new row is even, add the previous 2
-        gb.push(array[i+1] - 6)
-        gb.push(array[i+2] - 6)
+        gb.push(array[i+1] - subArrayQuantity)
+        gb.push(array[i+2] - subArrayQuantity)
       } 
       else{
         gb.push(array[i+1])
@@ -33,5 +34,5 @@ const frames = [
  44, 45, 46, 47, 48
 ]
 
-const YUV = rgbToYuv(frames)
+const YUV = rgbToYuv(frames, 12, 6)
 console.log(YUV)
